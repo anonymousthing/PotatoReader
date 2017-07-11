@@ -29,11 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.infiniteReader = new PotatoReader.InfiniteReader();
-			this.panelReader = new System.Windows.Forms.Panel();
-			this.panelManga = new System.Windows.Forms.Panel();
-			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
+			this.menuItemFile = new System.Windows.Forms.MenuItem();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabSummary = new System.Windows.Forms.TabPage();
 			this.lblMangaStatus = new System.Windows.Forms.Label();
@@ -43,73 +40,46 @@
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.listChapters = new System.Windows.Forms.ListView();
 			this.columnTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.panelBrowser = new System.Windows.Forms.Panel();
-			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
-			this.menuItemFile = new System.Windows.Forms.MenuItem();
-			this.menuItemOpenUrl = new System.Windows.Forms.MenuItem();
-			this.panelReader.SuspendLayout();
-			this.panelManga.SuspendLayout();
-			this.statusStrip1.SuspendLayout();
+			this.infiniteReader = new PotatoReader.InfiniteReader();
+			this.tablessTabControl1 = new PotatoReader.TablessTabControl();
+			this.screenManga = new System.Windows.Forms.TabPage();
+			this.screenReader = new System.Windows.Forms.TabPage();
+			this.screenBrowser = new System.Windows.Forms.TabPage();
+			this.button1 = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.toastPanel1 = new PotatoReader.ToastPanel();
 			this.tabControl1.SuspendLayout();
 			this.tabSummary.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tabPage2.SuspendLayout();
+			this.tablessTabControl1.SuspendLayout();
+			this.screenManga.SuspendLayout();
+			this.screenReader.SuspendLayout();
+			this.screenBrowser.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// infiniteReader
+			// mainMenu1
 			// 
-			this.infiniteReader.BackColor = System.Drawing.Color.White;
-			this.infiniteReader.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.infiniteReader.Location = new System.Drawing.Point(0, 0);
-			this.infiniteReader.Name = "infiniteReader";
-			this.infiniteReader.Size = new System.Drawing.Size(839, 742);
-			this.infiniteReader.TabIndex = 0;
-			this.infiniteReader.Text = "infiniteReader1";
+			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItemFile});
 			// 
-			// panelReader
+			// menuItemFile
 			// 
-			this.panelReader.Controls.Add(this.infiniteReader);
-			this.panelReader.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panelReader.Location = new System.Drawing.Point(0, 0);
-			this.panelReader.Name = "panelReader";
-			this.panelReader.Size = new System.Drawing.Size(839, 742);
-			this.panelReader.TabIndex = 2;
-			// 
-			// panelManga
-			// 
-			this.panelManga.Controls.Add(this.statusStrip1);
-			this.panelManga.Controls.Add(this.tabControl1);
-			this.panelManga.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panelManga.Location = new System.Drawing.Point(0, 0);
-			this.panelManga.Name = "panelManga";
-			this.panelManga.Size = new System.Drawing.Size(839, 742);
-			this.panelManga.TabIndex = 1;
-			// 
-			// statusStrip1
-			// 
-			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 720);
-			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(839, 22);
-			this.statusStrip1.TabIndex = 2;
-			this.statusStrip1.Text = "statusStrip1";
-			// 
-			// toolStripStatusLabel1
-			// 
-			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+			this.menuItemFile.Index = 0;
+			this.menuItemFile.Text = "File";
 			// 
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabSummary);
 			this.tabControl1.Controls.Add(this.tabPage2);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.Location = new System.Drawing.Point(0, 0);
+			this.tabControl1.Location = new System.Drawing.Point(3, 3);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(839, 742);
-			this.tabControl1.TabIndex = 3;
+			this.tabControl1.Size = new System.Drawing.Size(825, 710);
+			this.tabControl1.TabIndex = 6;
 			// 
 			// tabSummary
 			// 
@@ -120,7 +90,7 @@
 			this.tabSummary.Location = new System.Drawing.Point(4, 22);
 			this.tabSummary.Name = "tabSummary";
 			this.tabSummary.Padding = new System.Windows.Forms.Padding(3);
-			this.tabSummary.Size = new System.Drawing.Size(831, 716);
+			this.tabSummary.Size = new System.Drawing.Size(817, 684);
 			this.tabSummary.TabIndex = 0;
 			this.tabSummary.Text = "Summary";
 			this.tabSummary.UseVisualStyleBackColor = true;
@@ -158,7 +128,7 @@
 			this.lblMangaTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMangaTitle.AutoSize = true;
 			this.lblMangaTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lblMangaTitle.Location = new System.Drawing.Point(442, 7);
+			this.lblMangaTitle.Location = new System.Drawing.Point(428, 7);
 			this.lblMangaTitle.MaximumSize = new System.Drawing.Size(400, 300);
 			this.lblMangaTitle.Name = "lblMangaTitle";
 			this.lblMangaTitle.Size = new System.Drawing.Size(381, 74);
@@ -171,7 +141,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(831, 716);
+			this.tabPage2.Size = new System.Drawing.Size(817, 684);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Chapters";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -183,7 +153,7 @@
 			this.listChapters.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listChapters.Location = new System.Drawing.Point(3, 3);
 			this.listChapters.Name = "listChapters";
-			this.listChapters.Size = new System.Drawing.Size(825, 710);
+			this.listChapters.Size = new System.Drawing.Size(811, 678);
 			this.listChapters.TabIndex = 0;
 			this.listChapters.UseCompatibleStateImageBehavior = false;
 			this.listChapters.View = System.Windows.Forms.View.Details;
@@ -194,78 +164,155 @@
 			this.columnTitle.Text = "Chapter";
 			this.columnTitle.Width = 589;
 			// 
-			// panelBrowser
+			// infiniteReader
 			// 
-			this.panelBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panelBrowser.Location = new System.Drawing.Point(0, 0);
-			this.panelBrowser.Name = "panelBrowser";
-			this.panelBrowser.Size = new System.Drawing.Size(839, 742);
-			this.panelBrowser.TabIndex = 3;
+			this.infiniteReader.BackColor = System.Drawing.Color.White;
+			this.infiniteReader.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.infiniteReader.Location = new System.Drawing.Point(3, 3);
+			this.infiniteReader.Name = "infiniteReader";
+			this.infiniteReader.Size = new System.Drawing.Size(825, 710);
+			this.infiniteReader.TabIndex = 5;
+			this.infiniteReader.Text = "infiniteReader1";
 			// 
-			// mainMenu1
+			// tablessTabControl1
 			// 
-			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItemFile});
+			this.tablessTabControl1.Controls.Add(this.screenManga);
+			this.tablessTabControl1.Controls.Add(this.screenReader);
+			this.tablessTabControl1.Controls.Add(this.screenBrowser);
+			this.tablessTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tablessTabControl1.Location = new System.Drawing.Point(0, 0);
+			this.tablessTabControl1.Name = "tablessTabControl1";
+			this.tablessTabControl1.SelectedIndex = 0;
+			this.tablessTabControl1.Size = new System.Drawing.Size(839, 742);
+			this.tablessTabControl1.TabIndex = 7;
 			// 
-			// menuItemFile
+			// screenManga
 			// 
-			this.menuItemFile.Index = 0;
-			this.menuItemFile.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItemOpenUrl});
-			this.menuItemFile.Text = "File";
+			this.screenManga.Controls.Add(this.tabControl1);
+			this.screenManga.Location = new System.Drawing.Point(4, 22);
+			this.screenManga.Name = "screenManga";
+			this.screenManga.Padding = new System.Windows.Forms.Padding(3);
+			this.screenManga.Size = new System.Drawing.Size(831, 716);
+			this.screenManga.TabIndex = 0;
+			this.screenManga.Text = "Manga";
+			this.screenManga.UseVisualStyleBackColor = true;
 			// 
-			// menuItemOpenUrl
+			// screenReader
 			// 
-			this.menuItemOpenUrl.Index = 0;
-			this.menuItemOpenUrl.Text = "Open URL...";
-			this.menuItemOpenUrl.Click += new System.EventHandler(this.menuItemOpenUrl_Click);
+			this.screenReader.Controls.Add(this.infiniteReader);
+			this.screenReader.Location = new System.Drawing.Point(4, 22);
+			this.screenReader.Name = "screenReader";
+			this.screenReader.Padding = new System.Windows.Forms.Padding(3);
+			this.screenReader.Size = new System.Drawing.Size(831, 716);
+			this.screenReader.TabIndex = 1;
+			this.screenReader.Text = "Reader";
+			this.screenReader.UseVisualStyleBackColor = true;
+			// 
+			// screenBrowser
+			// 
+			this.screenBrowser.Controls.Add(this.button1);
+			this.screenBrowser.Controls.Add(this.label2);
+			this.screenBrowser.Controls.Add(this.label1);
+			this.screenBrowser.Controls.Add(this.textBox1);
+			this.screenBrowser.Location = new System.Drawing.Point(4, 22);
+			this.screenBrowser.Name = "screenBrowser";
+			this.screenBrowser.Padding = new System.Windows.Forms.Padding(3);
+			this.screenBrowser.Size = new System.Drawing.Size(831, 716);
+			this.screenBrowser.TabIndex = 2;
+			this.screenBrowser.Text = "Browser";
+			this.screenBrowser.UseVisualStyleBackColor = true;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(388, 34);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 3;
+			this.button1.Text = "Go";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(8, 103);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(160, 13);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "Actual browser coming soon (tm)";
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(8, 20);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(352, 13);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "Enter manga URL (Kissmanga, Mangahere and Mangareader supported):";
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(8, 36);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(374, 20);
+			this.textBox1.TabIndex = 0;
+			// 
+			// toastPanel1
+			// 
+			this.toastPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.toastPanel1.Location = new System.Drawing.Point(0, 702);
+			this.toastPanel1.Name = "toastPanel1";
+			this.toastPanel1.Size = new System.Drawing.Size(839, 40);
+			this.toastPanel1.TabIndex = 8;
+			this.toastPanel1.Visible = false;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(839, 742);
-			this.Controls.Add(this.panelManga);
-			this.Controls.Add(this.panelBrowser);
-			this.Controls.Add(this.panelReader);
+			this.Controls.Add(this.toastPanel1);
+			this.Controls.Add(this.tablessTabControl1);
 			this.Icon = global::PotatoReader.Properties.Resources.icon3_3tV_icon;
 			this.Menu = this.mainMenu1;
 			this.Name = "Form1";
-			this.Text = "PotatoReader";
-			this.panelReader.ResumeLayout(false);
-			this.panelManga.ResumeLayout(false);
-			this.panelManga.PerformLayout();
-			this.statusStrip1.ResumeLayout(false);
-			this.statusStrip1.PerformLayout();
+			this.Text = " ";
 			this.tabControl1.ResumeLayout(false);
 			this.tabSummary.ResumeLayout(false);
 			this.tabSummary.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tabPage2.ResumeLayout(false);
+			this.tablessTabControl1.ResumeLayout(false);
+			this.screenManga.ResumeLayout(false);
+			this.screenReader.ResumeLayout(false);
+			this.screenBrowser.ResumeLayout(false);
+			this.screenBrowser.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
-
-		private InfiniteReader infiniteReader;
-		private System.Windows.Forms.Panel panelReader;
-		private System.Windows.Forms.Panel panelManga;
-		private System.Windows.Forms.StatusStrip statusStrip1;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+		private System.Windows.Forms.MainMenu mainMenu1;
+		private System.Windows.Forms.MenuItem menuItemFile;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabSummary;
+		private System.Windows.Forms.Label lblMangaStatus;
+		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.Label lblMangaDescription;
+		private System.Windows.Forms.Label lblMangaTitle;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.ListView listChapters;
 		private System.Windows.Forms.ColumnHeader columnTitle;
-		private System.Windows.Forms.Panel panelBrowser;
-		private System.Windows.Forms.Label lblMangaTitle;
-		private System.Windows.Forms.Label lblMangaDescription;
-		private System.Windows.Forms.Label lblMangaStatus;
-		private System.Windows.Forms.PictureBox pictureBox1;
-		private System.Windows.Forms.MainMenu mainMenu1;
-		private System.Windows.Forms.MenuItem menuItemFile;
-		private System.Windows.Forms.MenuItem menuItemOpenUrl;
+		private InfiniteReader infiniteReader;
+		private TablessTabControl tablessTabControl1;
+		private System.Windows.Forms.TabPage screenBrowser;
+		private System.Windows.Forms.TabPage screenManga;
+		private System.Windows.Forms.TabPage screenReader;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Button button1;
+		private ToastPanel toastPanel1;
 	}
 }
 

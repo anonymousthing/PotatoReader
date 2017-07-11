@@ -2042,6 +2042,7 @@ namespace PotatoReader
 		private static extern int GetRawInputData(IntPtr hRawInput, RawInputCommand command, [Out] IntPtr pData, [In, Out] ref int size, int sizeHeader);
 
 		private static Dictionary<VirtualKeys, bool> lastStates = new Dictionary<VirtualKeys, bool>();
+		private static Dictionary<VirtualKeys, HashSet<Action>> callbacks = new Dictionary<VirtualKeys, HashSet<Action>>();
 
 		public static void RegisterDevice(HIDUsagePage usagePage, HIDUsage usage, RawInputDeviceFlags deviceFlags, IntPtr handle)
 		{
@@ -2062,6 +2063,23 @@ namespace PotatoReader
 			VirtualKeys key = buffer.Keyboard.VirtualKey;
 			bool pressed = !buffer.Keyboard.Flags.HasFlag(RawKeyboardFlags.KeyBreak);
 			lastStates[key] = pressed;
+			if (pressed)
+			{
+				if (callbacks.ContainsKey(key))
+				{
+					foreach (var callback in callbacks[key])
+						callback();
+				}
+			}
+		}
+
+		//Very basic event handling. Only supports single key callbacks currently.
+		public static void RegisterCallback(VirtualKeys key, Action callback)
+		{
+			if (callbacks.ContainsKey(key))
+				callbacks[key].Add(callback);
+			else
+				callbacks.Add(key, new HashSet<Action>() { callback });
 		}
 
 		public static bool IsPressed(VirtualKeys key)

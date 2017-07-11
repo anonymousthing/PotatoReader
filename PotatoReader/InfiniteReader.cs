@@ -13,6 +13,7 @@ namespace PotatoReader
 {
 	class InfiniteReader : Control
 	{
+		bool renderDebug = true;
 		//N pages above, N pages below of buffer space. This refers to loaded pages, not rendered pages.
 		int buffer = 7;
 		PageProvider provider;
@@ -36,6 +37,9 @@ namespace PotatoReader
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true);
 			this.BackColor = Color.White;
 			this.MouseWheel += InfiniteReader_MouseWheel;
+			RawInput.RegisterCallback(VirtualKeys.K, () => {
+				renderDebug = !renderDebug;
+			});
 		}
 
 		public InfiniteReader(PageProvider provider) : this()
@@ -312,6 +316,28 @@ namespace PotatoReader
 			var pageNumberPosition = new PointF(Width - pageNumberSize.Width, Height - pageNumberSize.Height);
 			e.Graphics.FillRectangle(pageNumberBG, new RectangleF(pageNumberPosition, pageNumberSize));
 			e.Graphics.DrawString(pageNumberText, pageNumberFont, Brushes.White, pageNumberPosition);
+
+			if (renderDebug)
+				RenderDebug(e.Graphics);
+		}
+
+		private void RenderDebug(Graphics g)
+		{
+			g.FillRectangle(new SolidBrush(Color.FromArgb(100, 0, 0, 0)), 0, 0, 200, 400);
+			StringBuilder builder = new StringBuilder();
+			for (int i = 0; i < loadedPages.Count; i++)
+			{
+				var page = loadedPages[i];
+				builder.Append(page?.ToString() ?? "No page");
+				if (i == buffer)
+					builder.Append(" -- current page");
+				builder.AppendLine();
+			}
+
+			builder.AppendLine();
+			builder.AppendLine("Waiting on chapter info:");
+
+			g.DrawString(builder.ToString(), pageNumberFont, Brushes.White, new Point(0, 0));
 		}
 	}
 }

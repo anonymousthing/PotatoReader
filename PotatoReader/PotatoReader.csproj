@@ -11,6 +11,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\icon3_3tV_icon.ico</ApplicationIcon>
@@ -61,12 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
-    <Compile Include="Form2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Providers\OnlineSource.cs" />
     <Compile Include="Providers\Sites\DownloadHelper.cs" />
     <Compile Include="Providers\Sites\KissManga.cs" />
@@ -91,11 +88,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structures\Chapter.cs" />
     <Compile Include="Structures\Page.cs" />
+    <Compile Include="TablessTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToastPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Updater.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InfiniteReader.resx">
       <DependentUpon>InfiniteReader.cs</DependentUpon>
@@ -128,4 +129,9 @@
     <None Include="Resources\icon3_3tV_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+  "C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe" /ndebug /copyattrs /targetplatform:4.0,"C:\Windows\Microsoft.NET\Framework64\v4.0.30319" /out:"C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Prod\PotatoReader.exe" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\PotatoReader.exe" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\CloudFlareUtilities.dll" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\DequeNet.dll" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\System.ValueTuple.dll"
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

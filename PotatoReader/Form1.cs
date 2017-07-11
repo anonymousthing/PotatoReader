@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,11 +22,13 @@ namespace PotatoReader
 		public Form1()
 		{
 			InitializeComponent();
+
 			//We use raw input for CTRL so that Win10 users can zoom with CTRL + scroll wheel without the window being in focus.
 			RawInput.RegisterDevice(HIDUsagePage.Generic, HIDUsage.Keyboard, RawInputDeviceFlags.InputSink, this.Handle);
 			provider = new PageProvider(source);
 			infiniteReader.SetPageProvider(provider);
 			ShowBrowserScreen();
+			CheckForUpdates();
 		}
 
 		protected override void WndProc(ref Message m)
@@ -36,24 +39,49 @@ namespace PotatoReader
 			base.WndProc(ref m);
 		}
 
+		private async void CheckForUpdates()
+		{
+			if (await Updater.CheckVersion())
+			{
+				System.Media.SystemSounds.Beep.Play(); //DING
+				if (MessageBox.Show(this, "An update is available for PotatoReader. Do you want to update and restart the application now?",
+						"PotatoReader - Update available", MessageBoxButtons.YesNo) == DialogResult.Yes)
+				{
+					await Updater.UpdateToNewVersion(Wc_DownloadProgressChanged, Wc_DownloadFileCompleted);
+				}
+			}
+		}
+
+		private void Wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+		{
+			toastPanel1.SetUpdateStatus(2, 100);
+			this.Invalidate();
+		}
+
+		private void Wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+		{
+			toastPanel1.SetUpdateStatus(1, e.BytesReceived / (float)e.TotalBytesToReceive);
+			this.Invalidate();
+		}
+
 		private void SetStatus(string text)
 		{
-			toolStripStatusLabel1.Text = text;
+			//toolStripStatusLabel1.Text = text;
 		}
 
 		private void ShowBrowserScreen()
 		{
-			panelBrowser.BringToFront();
+			tablessTabControl1.SelectedTab = screenBrowser;
 		}
 
 		private void ShowMangaScreen()
 		{
-			panelManga.BringToFront();
+			tablessTabControl1.SelectedTab = screenManga;
 		}
 
 		private void ShowReaderScreen()
 		{
-			panelReader.BringToFront();
+			tablessTabControl1.SelectedTab = screenReader;
 		}
 
 		private async void LoadBook(string url)
@@ -73,23 +101,18 @@ namespace PotatoReader
 
 		private async void listChapters_ItemActivate(object sender, EventArgs e)
 		{
+			ShowReaderScreen();
 			Chapter chapter = (Chapter)listChapters.SelectedItems[0].Tag;
 			source.LoadChapter(chapter.Book, chapter.ChapterNumber);
 			await Task.Run(() => source.WaitForChapter(chapter.Book, chapter.ChapterNumber));
 
 			infiniteReader.SetPage(source.LoadChapter(chapter.Book, chapter.ChapterNumber).Pages[0]);
-			ShowReaderScreen();
 		}
 
-		private void menuItemOpenUrl_Click(object sender, EventArgs e)
+		private void button1_Click(object sender, EventArgs e)
 		{
-			var form2 = new Form2();
-			form2.ShowDialog();
-			if (form2.search)
-			{
-				LoadBook(form2.searchText);
-				ShowMangaScreen();
-			}
+			LoadBook(textBox1.Text);
+			ShowMangaScreen();
 		}
 	}
 }
