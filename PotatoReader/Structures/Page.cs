@@ -44,7 +44,7 @@ namespace PotatoReader.Structures
 
 		public override string ToString()
 		{
-			string baseString = "Chapter " + Chapter.ChapterNumber + ": " + PageNumber + "/" + Chapter.Pages.Length;
+			string baseString = "Chapter " + (Chapter.ChapterNumber + 1) + ": " + (PageNumber + 1) + "/" + Chapter.Pages.Length;
 			if (Image == null)
 				return baseString + " - Not loaded yet";
 			return baseString;

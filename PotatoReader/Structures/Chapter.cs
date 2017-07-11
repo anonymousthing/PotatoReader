@@ -43,7 +43,7 @@ namespace PotatoReader.Structures
 
 		public override string ToString()
 		{
-			return "#" + ChapterNumber + " - '" + DisplayName + "'";
+			return "#" + (ChapterNumber + 1) + " - '" + DisplayName + "'";
 		}
 	}
 }
