@@ -17,14 +17,13 @@ namespace PotatoReader.Providers
 			new KissManga(),
 			new MangaHere()
 		};
-		HashSet<Chapter> downloadingChapters = new HashSet<Chapter>();
+		public HashSet<Chapter> downloadingChapters = new HashSet<Chapter>();
 
 		public OnlineSource()
 		{
 		}
-
-		//TODO: caching and disk storage, memory leak prevention
-		public override Chapter LoadChapter(Book book, int chapterNumber)
+		
+		public override Chapter LoadChapter(Book book, int chapterNumber, Action recheckCallback)
 		{
 			//Book data is always available in an online provider
 			Chapter chapter = book.Chapters[chapterNumber];
@@ -45,6 +44,7 @@ namespace PotatoReader.Providers
 					{
 						downloadingChapters.Remove(chapter);
 					}
+					recheckCallback();
 				});
 
 				return null;

@@ -9,7 +9,7 @@ namespace PotatoReader.Providers
 {
 	abstract class Source
 	{
-		public abstract Chapter LoadChapter(Book book, int chapterNumber);
+		public abstract Chapter LoadChapter(Book book, int chapterNumber, Action recheckCallback);
 		public abstract void WaitForChapter(Book book, int chapterNumber);
 		public abstract Task<Page> LoadPage(Page page);
 		public abstract Task<Book> LoadBook(string path);

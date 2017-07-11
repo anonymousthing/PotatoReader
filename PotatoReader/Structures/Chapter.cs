@@ -40,5 +40,10 @@ namespace PotatoReader.Structures
 		/// The URL for this specific chapter, for this book's source.
 		/// </summary>
 		public string Url;
+
+		public override string ToString()
+		{
+			return "#" + ChapterNumber + " - '" + DisplayName + "'";
+		}
 	}
 }

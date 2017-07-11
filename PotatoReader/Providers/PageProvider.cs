@@ -9,7 +9,7 @@ namespace PotatoReader.Providers
 {
 	class PageProvider
 	{
-		Source source;
+		public Source source;
 
 		public PageProvider(Source source)
 		{
@@ -56,7 +56,7 @@ namespace PotatoReader.Providers
 		/// </summary>
 		/// <param name="page">The page to get the next page for</param>
 		/// <returns>Page, or null if no more pages are available.</returns>
-		public Page GetNextPage(Page page, Action repaintCallback)
+		public Page GetNextPage(Page page, Action repaintCallback, Action recheckCallback)
 		{
 			if (page == null)
 				return null;
@@ -68,7 +68,7 @@ namespace PotatoReader.Providers
 				//Return first page of the first chapter that isn't empty
 				for (int i = chapter.ChapterNumber + 1; i < book.Chapters.Length; i++)
 				{
-					Chapter nextChapter = source.LoadChapter(book, i);
+					Chapter nextChapter = source.LoadChapter(book, i, recheckCallback);
 
 					//Future loading
 					if (nextChapter == null)
@@ -87,7 +87,7 @@ namespace PotatoReader.Providers
 		/// </summary>
 		/// <param name="page">The page to get the previous page for</param>
 		/// <returns>Page, or null if no pages are available.</returns>
-		public Page GetPreviousPage(Page page, Action repaintCallback)
+		public Page GetPreviousPage(Page page, Action repaintCallback, Action recheckCallback)
 		{
 			if (page == null)
 				return null;
@@ -102,7 +102,7 @@ namespace PotatoReader.Providers
 				//Return last page of the first chapter that isn't empty
 				for (int i = chapter.ChapterNumber - 1; i >= 0; i--)
 				{
-					Chapter previousChapter = source.LoadChapter(book, i);
+					Chapter previousChapter = source.LoadChapter(book, i, recheckCallback);
 
 					//Future loading
 					if (previousChapter == null)

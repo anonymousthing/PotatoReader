@@ -103,10 +103,10 @@ namespace PotatoReader
 		{
 			ShowReaderScreen();
 			Chapter chapter = (Chapter)listChapters.SelectedItems[0].Tag;
-			source.LoadChapter(chapter.Book, chapter.ChapterNumber);
+			source.LoadChapter(chapter.Book, chapter.ChapterNumber, () => { });
 			await Task.Run(() => source.WaitForChapter(chapter.Book, chapter.ChapterNumber));
 
-			infiniteReader.SetPage(source.LoadChapter(chapter.Book, chapter.ChapterNumber).Pages[0]);
+			infiniteReader.SetPage(source.LoadChapter(chapter.Book, chapter.ChapterNumber, () => { }).Pages[0]);
 		}
 
 		private void button1_Click(object sender, EventArgs e)

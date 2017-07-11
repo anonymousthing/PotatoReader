@@ -39,6 +39,7 @@ namespace PotatoReader
 			this.MouseWheel += InfiniteReader_MouseWheel;
 			RawInput.RegisterCallback(VirtualKeys.K, () => {
 				renderDebug = !renderDebug;
+				this.Invalidate();
 			});
 		}
 
@@ -66,7 +67,7 @@ namespace PotatoReader
 			Page previousPage = page;
 			for (int i = 0; i < buffer; i++)
 			{
-				previousPage = provider.GetPreviousPage(previousPage, this.Invalidate);
+				previousPage = provider.GetPreviousPage(previousPage, this.Invalidate, RefetchPages);
 				loadedPages.PushLeft(previousPage);
 			}
 
@@ -74,7 +75,7 @@ namespace PotatoReader
 			Page nextPage = page;
 			for (int i = 0; i < buffer; i++)
 			{
-				nextPage = provider.GetNextPage(nextPage, this.Invalidate);
+				nextPage = provider.GetNextPage(nextPage, this.Invalidate, RefetchPages);
 				loadedPages.PushRight(nextPage);
 			}
 
@@ -85,6 +86,25 @@ namespace PotatoReader
 		private int GetScaledHeight(Page page)
 		{
 			return !page.Loaded ? (int)(1200 * scale) : (int)(page.Image.Height * scale);
+		}
+
+		/// <summary>
+		/// If a new chapter has to be fetched first, this callback will re-ask for pages from the provider once 
+		/// the chapter metadata has finished downloading.
+		/// </summary>
+		private void RefetchPages()
+		{
+			//Next chapter now loaded
+			if (IsMissingNextPages())
+			{
+				LoadNextPages();
+			}
+
+			//Previous chapter now loaded
+			if (IsMissingPreviousPages())
+			{
+				LoadPreviousPages();
+			}
 		}
 
 		private void InfiniteReader_MouseWheel(object sender, MouseEventArgs e)
@@ -143,22 +163,7 @@ namespace PotatoReader
 			
 			scrollOffset += movement;
 
-			if (movement > 0)
-			{
-				//Next chapter now loaded
-				if (IsMissingNextPages())
-				{
-					LoadNextPages();
-				}
-			}
-			else
-			{
-				//Previous chapter now loaded
-				if (IsMissingPreviousPages())
-				{
-					LoadPreviousPages();
-				}
-			}
+			RefetchPages();
 
 			int scaledPageHeight = GetScaledHeight(currentPage);
 
@@ -218,10 +223,12 @@ namespace PotatoReader
 			Page page = currentPage;
 			for (int i = 0; i < buffer; i++)
 			{
-				var newPage = provider.GetNextPage(page, this.Invalidate);
+				var newPage = provider.GetNextPage(page, this.Invalidate, RefetchPages);
 				loadedPages.PushRight(newPage);
 				page = newPage;
 			}
+
+			this.Invalidate();
 		}
 
 		private void LoadPreviousPages()
@@ -236,22 +243,24 @@ namespace PotatoReader
 
 			for (int i = 0; i < buffer; i++)
 			{
-				var newPage = provider.GetPreviousPage(page, this.Invalidate);
+				var newPage = provider.GetPreviousPage(page, this.Invalidate, RefetchPages);
 				loadedPages.PushLeft(newPage);
 				page = newPage;
 			}
+
+			this.Invalidate();
 		}
 		
 		private void MoveToPreviousPage()
 		{
 			loadedPages.PopRight()?.Dispose();
-			loadedPages.PushLeft(provider.GetPreviousPage(loadedPages[0], this.Invalidate));
+			loadedPages.PushLeft(provider.GetPreviousPage(loadedPages[0], this.Invalidate, RefetchPages));
 		}
 
 		private void MoveToNextPage()
 		{
 			loadedPages.PopLeft()?.Dispose();
-			loadedPages.PushRight(provider.GetNextPage(loadedPages[loadedPages.Count - 1], this.Invalidate));
+			loadedPages.PushRight(provider.GetNextPage(loadedPages[loadedPages.Count - 1], this.Invalidate, RefetchPages));
 		}
 
 		//Only downscale to fit, don't upscale
@@ -336,6 +345,12 @@ namespace PotatoReader
 
 			builder.AppendLine();
 			builder.AppendLine("Waiting on chapter info:");
+			if (provider.source is OnlineSource)
+			{
+				var pendingChapters = ((OnlineSource)provider.source).downloadingChapters;
+				foreach (var chapter in pendingChapters)
+					builder.AppendLine(chapter.ToString());
+			}
 
 			g.DrawString(builder.ToString(), pageNumberFont, Brushes.White, new Point(0, 0));
 		}
