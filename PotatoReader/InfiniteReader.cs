@@ -217,11 +217,14 @@ namespace PotatoReader
 
 		private void LoadNextPages()
 		{
-			for (int i = 0; i < buffer; i++)
+			//Pop (and count) all nulls from the right of the deque
+			int i = 0;
+			for (; i < buffer && loadedPages[loadedPages.Count - 1] == null; i++)
 				loadedPages.PopRight()?.Dispose();
 
-			Page page = currentPage;
-			for (int i = 0; i < buffer; i++)
+			//Fetch i next pages
+			Page page = loadedPages[loadedPages.Count - 1];
+			for (int j = 0; j < i; j++)
 			{
 				var newPage = provider.GetNextPage(page, this.Invalidate, RefetchPages);
 				loadedPages.PushRight(newPage);
@@ -233,15 +236,13 @@ namespace PotatoReader
 
 		private void LoadPreviousPages()
 		{
-			//Store current page before dropping the other previous pages
-			Page page = currentPage;
-
 			//Drop old previous pages
-			//TODO: only need to pop null pages
-			for (int i = 0; i < buffer; i++)
+			int i = 0;
+			for (; i < buffer && loadedPages[0] == null; i++)
 				loadedPages.PopLeft()?.Dispose();
 
-			for (int i = 0; i < buffer; i++)
+			Page page = loadedPages[0];
+			for (int j = 0; j < i; j++)
 			{
 				var newPage = provider.GetPreviousPage(page, this.Invalidate, RefetchPages);
 				loadedPages.PushLeft(newPage);
