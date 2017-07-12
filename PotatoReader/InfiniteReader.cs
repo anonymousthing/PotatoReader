@@ -83,11 +83,6 @@ namespace PotatoReader
 			this.Invalidate();
 		}
 
-		private int GetScaledHeight(Page page)
-		{
-			return !page.Loaded ? (int)(1200 * scale) : (int)(page.Image.Height * scale);
-		}
-
 		/// <summary>
 		/// If a new chapter has to be fetched first, this callback will re-ask for pages from the provider once 
 		/// the chapter metadata has finished downloading.
@@ -127,12 +122,12 @@ namespace PotatoReader
 			{
 				if (provider.IsLastPage(lastVisiblePage))
 				{
-					float maximumScroll = GetScaledHeight(currentPage);
+					float maximumScroll = GetFitDimensions(currentPage).Height;
 					for (int i = buffer + 1; i < loadedPages.Count; i++)
 					{
 						if (loadedPages[i] == null)
 							break;
-						maximumScroll += GetScaledHeight(loadedPages[i]);
+						maximumScroll += GetFitDimensions(loadedPages[i]).Height;
 					}
 					maximumScroll -= Height;
 					scrollOffset = Math.Min((int)maximumScroll, scrollOffset + movement);
@@ -141,7 +136,7 @@ namespace PotatoReader
 					while (scrollOffset < 0)
 					{
 						MoveToPreviousPage();
-						scrollOffset += GetScaledHeight(currentPage);
+						scrollOffset += GetFitDimensions(currentPage).Height;
 					}
 
 					this.Invalidate();
@@ -165,7 +160,7 @@ namespace PotatoReader
 
 			RefetchPages();
 
-			int scaledPageHeight = GetScaledHeight(currentPage);
+			int scaledPageHeight = GetFitDimensions(currentPage).Height;
 
 			if (scrollOffset > scaledPageHeight)
 			{
@@ -173,6 +168,7 @@ namespace PotatoReader
 				{
 					MoveToNextPage();
 					scrollOffset = scrollOffset - scaledPageHeight;
+					scaledPageHeight = GetFitDimensions(currentPage).Height;
 				}
 			}
 			else if (scrollOffset < 0)
@@ -180,7 +176,7 @@ namespace PotatoReader
 				while (scrollOffset < 0)
 				{
 					MoveToPreviousPage();
-					scrollOffset += GetScaledHeight(currentPage);
+					scrollOffset += GetFitDimensions(currentPage).Height;
 				}
 			}
 
@@ -267,13 +263,23 @@ namespace PotatoReader
 		//Only downscale to fit, don't upscale
 		private Size GetFitDimensions(Page page)
 		{
-			float pageAspectRatio = (page.Image.Width * scale) / (page.Image.Height * scale);
-			float controlAspectRatio = Width / (float)Height;
-			if (page.Image.Width * scale > Width) 
+			//Default dimensions if not loaded
+			int pageWidth = 500;
+			int pageHeight = 1200;
+
+			if (page.Loaded)
 			{
-				return new Size(Width, page.Image.Height * Width / page.Image.Width).Scale(scale);
+				pageWidth = page.Image.Width;
+				pageHeight = page.Image.Height;
 			}
-			return page.Image.Size.Scale(scale);
+
+			float pageAspectRatio = (pageWidth * scale) / (pageHeight * scale);
+			float controlAspectRatio = Width / (float)Height;
+			if (pageWidth * scale > Width) 
+			{
+				return new Size(Width, pageHeight * Width / pageWidth).Scale(scale);
+			}
+			return new Size(pageWidth, pageHeight).Scale(scale);
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -295,6 +301,7 @@ namespace PotatoReader
 				var size = GetFitDimensions(currentPage);
 				currentHeight = size.Height;
 				e.Graphics.DrawImage(currentPage.Image, (Width - size.Width) / 2, -scrollOffset, size.Width, size.Height);
+				//e.Graphics.DrawLine(Pens.Red, new Point(0, -scrollOffset), new Point(Width, -scrollOffset));
 			}
 
 			//Iteratively draw next pages until we can't see those pages anymore
@@ -315,6 +322,8 @@ namespace PotatoReader
 				{
 					var size = GetFitDimensions(loadedPages[i]);
 					e.Graphics.DrawImage(loadedPages[i].Image, (Width - size.Width) / 2, currentHeight - scrollOffset, size.Width, size.Height);
+					if (renderDebug)
+						e.Graphics.DrawLine(Pens.Red, new Point(0, (int)(currentHeight - scrollOffset)), new Point(Width, (int)(currentHeight - scrollOffset)));
 					currentHeight += size.Height;
 				}
 			}
