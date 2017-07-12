@@ -34,7 +34,7 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabSummary = new System.Windows.Forms.TabPage();
 			this.lblMangaStatus = new System.Windows.Forms.Label();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.pictureBoxCoverImage = new System.Windows.Forms.PictureBox();
 			this.lblMangaDescription = new System.Windows.Forms.Label();
 			this.lblMangaTitle = new System.Windows.Forms.Label();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -50,14 +50,16 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.toastPanel1 = new PotatoReader.ToastPanel();
+			this.panelDescription = new System.Windows.Forms.Panel();
 			this.tabControl1.SuspendLayout();
 			this.tabSummary.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxCoverImage)).BeginInit();
 			this.tabPage2.SuspendLayout();
 			this.tablessTabControl1.SuspendLayout();
 			this.screenManga.SuspendLayout();
 			this.screenReader.SuspendLayout();
 			this.screenBrowser.SuspendLayout();
+			this.panelDescription.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// mainMenu1
@@ -83,9 +85,9 @@
 			// 
 			// tabSummary
 			// 
+			this.tabSummary.Controls.Add(this.panelDescription);
 			this.tabSummary.Controls.Add(this.lblMangaStatus);
-			this.tabSummary.Controls.Add(this.pictureBox1);
-			this.tabSummary.Controls.Add(this.lblMangaDescription);
+			this.tabSummary.Controls.Add(this.pictureBoxCoverImage);
 			this.tabSummary.Controls.Add(this.lblMangaTitle);
 			this.tabSummary.Location = new System.Drawing.Point(4, 22);
 			this.tabSummary.Name = "tabSummary";
@@ -97,35 +99,39 @@
 			// 
 			// lblMangaStatus
 			// 
+			this.lblMangaStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMangaStatus.AutoSize = true;
-			this.lblMangaStatus.Location = new System.Drawing.Point(449, 99);
+			this.lblMangaStatus.Location = new System.Drawing.Point(432, 102);
 			this.lblMangaStatus.Name = "lblMangaStatus";
 			this.lblMangaStatus.Size = new System.Drawing.Size(245, 104);
 			this.lblMangaStatus.TabIndex = 3;
 			this.lblMangaStatus.Text = "Alternative name(s): 多分ワンピース、オタクがいじん\r\nChapters: 10\r\nStatus: Ongoing\r\n\r\nAuthor(s):" +
     " Some guy\r\nArtist(s): Some girl\r\n\r\nGenre(s): Action, Comedy, Slice of Life";
 			// 
-			// pictureBox1
+			// pictureBoxCoverImage
 			// 
-			this.pictureBox1.BackColor = System.Drawing.Color.Maroon;
-			this.pictureBox1.Location = new System.Drawing.Point(15, 7);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(275, 214);
-			this.pictureBox1.TabIndex = 2;
-			this.pictureBox1.TabStop = false;
+			this.pictureBoxCoverImage.BackColor = System.Drawing.SystemColors.Window;
+			this.pictureBoxCoverImage.Location = new System.Drawing.Point(15, 7);
+			this.pictureBoxCoverImage.Name = "pictureBoxCoverImage";
+			this.pictureBoxCoverImage.Size = new System.Drawing.Size(407, 259);
+			this.pictureBoxCoverImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pictureBoxCoverImage.TabIndex = 2;
+			this.pictureBoxCoverImage.TabStop = false;
 			// 
 			// lblMangaDescription
 			// 
-			this.lblMangaDescription.AutoSize = true;
-			this.lblMangaDescription.Location = new System.Drawing.Point(12, 276);
+			this.lblMangaDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lblMangaDescription.Location = new System.Drawing.Point(0, 0);
 			this.lblMangaDescription.Name = "lblMangaDescription";
-			this.lblMangaDescription.Size = new System.Drawing.Size(159, 13);
+			this.lblMangaDescription.Size = new System.Drawing.Size(811, 412);
 			this.lblMangaDescription.TabIndex = 1;
 			this.lblMangaDescription.Text = "Lorem ipsum magical description";
 			// 
 			// lblMangaTitle
 			// 
-			this.lblMangaTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblMangaTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMangaTitle.AutoSize = true;
 			this.lblMangaTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblMangaTitle.Location = new System.Drawing.Point(428, 7);
@@ -266,6 +272,15 @@
 			this.toastPanel1.TabIndex = 8;
 			this.toastPanel1.Visible = false;
 			// 
+			// panelDescription
+			// 
+			this.panelDescription.Controls.Add(this.lblMangaDescription);
+			this.panelDescription.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.panelDescription.Location = new System.Drawing.Point(3, 269);
+			this.panelDescription.Name = "panelDescription";
+			this.panelDescription.Size = new System.Drawing.Size(811, 412);
+			this.panelDescription.TabIndex = 4;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -280,13 +295,14 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabSummary.ResumeLayout(false);
 			this.tabSummary.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBoxCoverImage)).EndInit();
 			this.tabPage2.ResumeLayout(false);
 			this.tablessTabControl1.ResumeLayout(false);
 			this.screenManga.ResumeLayout(false);
 			this.screenReader.ResumeLayout(false);
 			this.screenBrowser.ResumeLayout(false);
 			this.screenBrowser.PerformLayout();
+			this.panelDescription.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -297,7 +313,7 @@
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabSummary;
 		private System.Windows.Forms.Label lblMangaStatus;
-		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox pictureBoxCoverImage;
 		private System.Windows.Forms.Label lblMangaDescription;
 		private System.Windows.Forms.Label lblMangaTitle;
 		private System.Windows.Forms.TabPage tabPage2;
@@ -313,6 +329,7 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button button1;
 		private ToastPanel toastPanel1;
+		private System.Windows.Forms.Panel panelDescription;
 	}
 }
 

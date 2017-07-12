@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PotatoReader.Structures;
+using System.Drawing;
 
 namespace PotatoReader.Providers.Sites
 {
@@ -18,6 +19,8 @@ namespace PotatoReader.Providers.Sites
 		public override async Task<Book> GetBook(string bookUrl)
 		{
 			string page = await DownloadHelper.DownloadStringAsync(bookUrl);
+
+			//Get chapters
 			var chaptersLinks = ParseHelper.ParseGroup("<a href=\"(?<Value>[^\"]+)\">(?<Name>[^<]+)</a> :", page, "Name", "Value");
 			var resolvedChapters = chaptersLinks.Reverse().GroupBy(x => x.Value).Select(g => g.First()).Reverse().ToArray();
 			Book book = new Book();
@@ -35,6 +38,12 @@ namespace PotatoReader.Providers.Sites
 			}
 			book.Chapters = chapters.ToArray();
 			book.Url = bookUrl;
+
+			//Get other book details
+			var imgUrl = ParseHelper.Parse("<div id=\"mangaimg\"><img src=\"(?<Value>.+)\" alt=", page, "Value").First();
+			book.CoverImage = await DownloadHelper.DownloadImageAsync(imgUrl);
+			book.Title = ParseHelper.Parse("<h2 class=\"aname\">(?<Value>.+)</h2>", page, "Value").First();
+			book.Description = ParseHelper.Parse("<div id=\"readmangasum\">\\s+<h2>.+</h2>\\s+<p>(?<Value>.+)</p>\\s+</div>", page, "Value").First();
 
 			return book;
 		}

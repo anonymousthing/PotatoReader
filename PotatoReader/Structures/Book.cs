@@ -13,7 +13,7 @@ namespace PotatoReader.Structures
 		/// <summary>
 		/// The name of this book.
 		/// </summary>
-		public string Name;
+		public string Title;
 
 		/// <summary>
 		/// The description or synopsis of this book.

@@ -73,7 +73,7 @@ namespace PotatoReader.Providers.Sites
 	{
 		KissMangaTextDecryptor decryptor;
 		private string iv = "a5e8e2e9c2721be0a84ad660c472c1f3";
-		private string chko = "72nnasdasd9asdn123";
+		private string chko = "72nnasdasd9asdn123nasdbasd612basd";
 
 		public KissManga()
 		{

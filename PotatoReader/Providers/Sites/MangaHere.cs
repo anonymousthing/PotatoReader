@@ -35,6 +35,13 @@ namespace PotatoReader.Providers.Sites
 			book.Chapters = chapters.ToArray();
 			book.Url = bookUrl;
 
+			//Get other book details
+			var imgUrl = ParseHelper.Parse("<div class=\"manga_detail_top clearfix\">\\s+<img src=\"(?<Value>.+)\" onerror=", page, "Value").First();
+			book.CoverImage = await DownloadHelper.DownloadImageAsync(imgUrl);
+			book.Title = ParseHelper.Parse("<h2>(?<Value>.+) Manga</h2>\\s+Summary:", page, "Value").First();
+			book.Description = ParseHelper.Parse("<p id=\"show\" style=\"display:none;\">(?<Value>[^\"]+)<a href=\"javascript:void", page, "Value").First();
+			book.Description = book.Description.Replace("&nbsp;", "");
+
 			return book;
 		}
 

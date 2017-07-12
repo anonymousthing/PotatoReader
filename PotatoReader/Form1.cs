@@ -88,6 +88,9 @@ namespace PotatoReader
 		{
 			//Load book
 			Book book = await source.LoadBook(url);
+			lblMangaTitle.Text = book.Title;
+			pictureBoxCoverImage.Image = book.CoverImage;
+			lblMangaDescription.Text = book.Description;
 
 			//Set chapters
 			listChapters.Items.Clear();
