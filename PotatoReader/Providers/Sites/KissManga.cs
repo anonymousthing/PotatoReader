@@ -7,6 +7,8 @@ using PotatoReader.Structures;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.IO;
+using Jurassic;
+using System.Diagnostics;
 
 namespace PotatoReader.Providers.Sites
 {
@@ -72,12 +74,55 @@ namespace PotatoReader.Providers.Sites
 	class KissManga : Site
 	{
 		KissMangaTextDecryptor decryptor;
-		private string iv = "a5e8e2e9c2721be0a84ad660c472c1f3";
-		private string chko = "72nnasdasd9asdn123nasdbasd612basd";
+		ScriptEngine engine = new ScriptEngine();
 
 		public KissManga()
 		{
-			decryptor = new KissMangaTextDecryptor(iv, chko);
+			LoadKeys().Wait();
+		}
+
+		public async Task LoadKeys()
+		{
+			string page = await DownloadHelper.DownloadStringAsync("http://kissmanga.com/Manga/Black-Clover/Chapter-001?id=277498");
+			/// Could be secured against changes by capturing the script's path as it exists in the live document instead of assuming the location.
+			string pattern = "<script\\s+(type=[\"']text/javascript[\"'])?\\s+(src=[\"']/Scripts/{0}[\"'])>";
+			string concatedPattern = string.Concat(string.Format(pattern, "ca.js"), "|", string.Format(pattern, "lo.js"));
+
+			if (Regex.IsMatch(page, concatedPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled))
+			{
+				string funcUri = "http://kissmanga.com/Scripts/lo.js";
+				string decryptFunc = await DownloadHelper.DownloadStringAsync(funcUri);
+
+				/// Execute CryptoJS from saved resources to reduce HTTP requests.
+				engine.Execute(Properties.Resources.CryptoJs);
+
+				/// Execute the decryption function to allow it to be called later.
+				engine.Execute(decryptFunc);
+				
+				var keysPattern = "<script type=\"text/javascript\">[\\s]*(?<Value>.*)(?!</script>)";
+				var regex = new Regex(keysPattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+				var keys = string.Empty;
+
+				foreach (Match match in regex.Matches(page))
+				{
+					if (match.Value.Contains("CryptoJS"))
+					{
+						keys = match.Groups["Value"].Value;
+						break;
+					}
+				}
+
+				if (string.IsNullOrWhiteSpace(keys))
+				{
+					throw new ArgumentException("Cannot decrypt image URIs.");
+				}
+				else
+				{
+					engine.Execute(keys);
+				}
+
+				decryptor = new KissMangaTextDecryptor((string)engine.Evaluate("iv.toString()"), (string)engine.Evaluate("chko"));
+			}
 		}
 
 		public override async Task<Page> DownloadPage(Page page)
@@ -116,8 +161,7 @@ namespace PotatoReader.Providers.Sites
 			var encryptedPages = ParseHelper.Parse("lstImages.push\\(wrapKA\\(\"(?<Value>.[^\"]*)\"\\)\\)", page, "Value");
 			var pageLinks = encryptedPages.Select(e => decryptor.DecryptFromBase64(e)).ToArray();
 			var pages = new List<Page>();
-			for (int i = 0; i < pageLinks.Length; i++)
-			{
+			for (int i = 0; i < pageLinks.Length; i++) {
 				var pageLink = pageLinks[i];
 				pages.Add(new Page()
 				{

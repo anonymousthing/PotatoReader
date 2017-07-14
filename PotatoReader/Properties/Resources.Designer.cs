@@ -61,6 +61,15 @@ namespace PotatoReader.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to var _0x6d49=[&quot;\x6C\x69\x62&quot;,&quot;\x42\x61\x73\x65&quot;,&quot;\x70\x72\x6F\x74\x6F\x74\x79\x70\x65&quot;,&quot;\x6D\x69\x78\x49\x6E&quot;,&quot;\x69\x6E\x69\x74&quot;,&quot;\x68\x61\x73\x4F\x77\x6E\x50\x72\x6F\x70\x65\x72\x74\x79&quot;,&quot;\x61\x70\x70\x6C\x79&quot;,&quot;\x24\x73\x75\x70\x65\x72&quot;,&quot;\x65\x78\x74\x65\x6E\x64&quot;,&quot;\x74\x6F\x53\x74\x72\x69\x6E\x67&quot;,&quot;\x57\x6F\x72\x64\x41\x72\x72\x61\x79&quot;,&quot;\x77\x6F\x72\x64\x73&quot;,&quot;\x73\x69\x67\x42\x79\x74\x65\x73&quot;,&quot;\x6C\x65\x6E\x67\x74\x68&quot;,&quot;\x73\x74\x72\x69\x6E\x67\x69\x66\x79&quot;,&quot;\x63\x6C\x61\x6D\x70&quot;,&quot;\x70\x75\x73\x68&quot;,&quot;\x63\x6 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CryptoJs {
+            get {
+                return ResourceManager.GetString("CryptoJs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon icon3_3tV_icon {
