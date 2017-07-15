@@ -330,7 +330,7 @@ namespace PotatoReader
 			lastVisiblePage = loadedPages[i - 1];
 
 			//Render page numbers
-			string pageNumberText = (currentPage.PageNumber + 1) + "/" + currentPage.Chapter.Pages.Length;
+			string pageNumberText = currentPage.Chapter.DisplayName + " - " + (currentPage.PageNumber + 1) + "/" + currentPage.Chapter.Pages.Length;
 			var pageNumberSize = e.Graphics.MeasureString(pageNumberText, pageNumberFont);
 			var pageNumberPosition = new PointF(Width - pageNumberSize.Width, Height - pageNumberSize.Height);
 			e.Graphics.FillRectangle(pageNumberBG, new RectangleF(pageNumberPosition, pageNumberSize));

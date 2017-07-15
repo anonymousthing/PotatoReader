@@ -135,7 +135,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
-  "C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe" /ndebug /copyattrs /targetplatform:4.0,"C:\Windows\Microsoft.NET\Framework64\v4.0.30319" /out:"C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Prod\PotatoReader.exe" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\PotatoReader.exe" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\CloudFlareUtilities.dll" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\DequeNet.dll" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\System.ValueTuple.dll"
+  "C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe" /ndebug /copyattrs /targetplatform:4.0,"C:\Windows\Microsoft.NET\Framework64\v4.0.30319" /out:"C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Prod\PotatoReader.exe" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\PotatoReader.exe" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\CloudFlareUtilities.dll" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\DequeNet.dll" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\System.ValueTuple.dll" "C:\Users\Declan\Dropbox\Projects\PotatoReader\PotatoReader\bin\Release\Jurassic.dll"
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>
