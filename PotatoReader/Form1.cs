@@ -117,5 +117,20 @@ namespace PotatoReader
 			LoadBook(textBox1.Text);
 			ShowMangaScreen();
 		}
+
+		private void menuItem4_Click(object sender, EventArgs e)
+		{
+			ShowBrowserScreen();
+		}
+
+		private void menuItem2_Click(object sender, EventArgs e)
+		{
+			ShowMangaScreen();
+		}
+
+		private void menuItem3_Click(object sender, EventArgs e)
+		{
+			ShowReaderScreen();
+		}
 	}
 }
