@@ -37,7 +37,7 @@ namespace PotatoReader
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true);
 			this.BackColor = Color.White;
 			this.MouseWheel += InfiniteReader_MouseWheel;
-			RawInput.RegisterCallback(VirtualKeys.K, () => {
+			RawInput.RegisterFocusCallback(VirtualKeys.K, () => {
 				renderDebug = !renderDebug;
 				this.Invalidate();
 			});

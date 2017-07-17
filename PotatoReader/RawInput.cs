@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -2041,11 +2042,18 @@ namespace PotatoReader
 		[DllImport("User32.dll", SetLastError = true)]
 		private static extern int GetRawInputData(IntPtr hRawInput, RawInputCommand command, [Out] IntPtr pData, [In, Out] ref int size, int sizeHeader);
 
+		[DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+		private static extern IntPtr GetForegroundWindow();
+
 		private static Dictionary<VirtualKeys, bool> lastStates = new Dictionary<VirtualKeys, bool>();
 		private static Dictionary<VirtualKeys, HashSet<Action>> callbacks = new Dictionary<VirtualKeys, HashSet<Action>>();
+		private static Dictionary<VirtualKeys, HashSet<Action>> focusCallbacks = new Dictionary<VirtualKeys, HashSet<Action>>();
+
+		static IntPtr handle;
 
 		public static void RegisterDevice(HIDUsagePage usagePage, HIDUsage usage, RawInputDeviceFlags deviceFlags, IntPtr handle)
 		{
+			RawInput.handle = handle;
 			RAWINPUTDEVICE device = new RAWINPUTDEVICE() { UsagePage = usagePage, Usage = usage, Flags = deviceFlags, WindowHandle = handle };
 			RegisterRawInputDevices(new RAWINPUTDEVICE[1] { device }, 1, Marshal.SizeOf(device));
 		}
@@ -2066,10 +2074,12 @@ namespace PotatoReader
 			if (pressed)
 			{
 				if (callbacks.ContainsKey(key))
-				{
 					foreach (var callback in callbacks[key])
 						callback();
-				}
+
+				if (focusCallbacks.ContainsKey(key) && GetForegroundWindow() == handle)
+					foreach (var callback in focusCallbacks[key])
+						callback();
 			}
 		}
 
@@ -2080,6 +2090,14 @@ namespace PotatoReader
 				callbacks[key].Add(callback);
 			else
 				callbacks.Add(key, new HashSet<Action>() { callback });
+		}
+
+		public static void RegisterFocusCallback(VirtualKeys key, Action callback)
+		{
+			if (focusCallbacks.ContainsKey(key))
+				focusCallbacks[key].Add(callback);
+			else
+				focusCallbacks.Add(key, new HashSet<Action>() { callback });
 		}
 
 		public static bool IsPressed(VirtualKeys key)
