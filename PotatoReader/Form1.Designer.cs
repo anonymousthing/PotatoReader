@@ -125,7 +125,7 @@
 			this.lblMangaStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblMangaStatus.AutoSize = true;
-			this.lblMangaStatus.Location = new System.Drawing.Point(432, 102);
+			this.lblMangaStatus.Location = new System.Drawing.Point(428, 162);
 			this.lblMangaStatus.Name = "lblMangaStatus";
 			this.lblMangaStatus.Size = new System.Drawing.Size(245, 104);
 			this.lblMangaStatus.TabIndex = 3;

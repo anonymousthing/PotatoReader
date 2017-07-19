@@ -67,6 +67,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Providers\OnlineSource.cs" />
     <Compile Include="Providers\Sites\DownloadHelper.cs" />
+    <Compile Include="Providers\Sites\Funmanga.cs" />
     <Compile Include="Providers\Sites\KissManga.cs" />
     <Compile Include="Providers\Sites\MangaHere.cs" />
     <Compile Include="Providers\Sites\MangaReader.cs" />

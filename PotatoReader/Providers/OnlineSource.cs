@@ -15,7 +15,8 @@ namespace PotatoReader.Providers
 		{
 			new MangaReader(),
 			new KissManga(),
-			new MangaHere()
+			new MangaHere(),
+			new Funmanga()
 		};
 		public HashSet<Chapter> downloadingChapters = new HashSet<Chapter>();
 
