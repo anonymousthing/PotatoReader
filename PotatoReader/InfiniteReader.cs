@@ -290,19 +290,12 @@ namespace PotatoReader
 				return;
 			
 			//First draw the current page at (0, -scrollOffset)
-			float currentHeight;
+			var size = GetFitDimensions(currentPage);
+			float currentHeight = size.Height;
 			if (currentPage == null || !currentPage.Loaded)
-			{
-				currentHeight = 1200 * scale;
-				e.Graphics.FillRectangle(Brushes.LightBlue, (Width - 500 * scale) / 2, scrollOffset, 500 * scale, 1200 * scale);
-			}
+				e.Graphics.FillRectangle(Brushes.LightBlue, (Width - size.Width) / 2, -scrollOffset, size.Width, size.Height);
 			else
-			{
-				var size = GetFitDimensions(currentPage);
-				currentHeight = size.Height;
 				e.Graphics.DrawImage(currentPage.Image, (Width - size.Width) / 2, -scrollOffset, size.Width, size.Height);
-				//e.Graphics.DrawLine(Pens.Red, new Point(0, -scrollOffset), new Point(Width, -scrollOffset));
-			}
 
 			//Iteratively draw next pages until we can't see those pages anymore
 			//(only draw pages that are visible)
@@ -310,22 +303,20 @@ namespace PotatoReader
 			for (; i < loadedPages.Count; i++)
 			{
 				if (currentHeight - scrollOffset > Height || loadedPages[i] == null)
-				{
 					break;
-				}
+
+				size = GetFitDimensions(loadedPages[i]);
+
+				//Draw page
 				if (!loadedPages[i].Loaded)
-				{
-					e.Graphics.FillRectangle(Brushes.LightBlue, (Width - 500 * scale) / 2, currentHeight - scrollOffset, 500 * scale, 1200 * scale);
-					currentHeight += 1200 * scale;
-				}
+					e.Graphics.FillRectangle(Brushes.LightBlue, (Width - size.Width) / 2, currentHeight - scrollOffset, size.Width, size.Height);
 				else
-				{
-					var size = GetFitDimensions(loadedPages[i]);
 					e.Graphics.DrawImage(loadedPages[i].Image, (Width - size.Width) / 2, currentHeight - scrollOffset, size.Width, size.Height);
-					if (renderDebug)
-						e.Graphics.DrawLine(Pens.Red, new Point(0, (int)(currentHeight - scrollOffset)), new Point(Width, (int)(currentHeight - scrollOffset)));
-					currentHeight += size.Height;
-				}
+
+				//Draw red page line :)
+				if (renderDebug)
+					e.Graphics.DrawLine(Pens.Red, new Point(0, (int)(currentHeight - scrollOffset)), new Point(Width, (int)(currentHeight - scrollOffset)));
+				currentHeight += size.Height;
 			}
 			lastVisiblePage = loadedPages[i - 1];
 
@@ -342,7 +333,7 @@ namespace PotatoReader
 
 		private void RenderDebug(Graphics g)
 		{
-			g.FillRectangle(new SolidBrush(Color.FromArgb(100, 0, 0, 0)), 0, 0, 200, 400);
+			g.FillRectangle(new SolidBrush(Color.FromArgb(100, 0, 0, 0)), 0, 0, 250, 400);
 			StringBuilder builder = new StringBuilder();
 			for (int i = 0; i < loadedPages.Count; i++)
 			{
