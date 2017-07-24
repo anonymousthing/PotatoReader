@@ -31,6 +31,10 @@
 			this.components = new System.ComponentModel.Container();
 			this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
 			this.menuItemFile = new System.Windows.Forms.MenuItem();
+			this.menuItem1 = new System.Windows.Forms.MenuItem();
+			this.menuItem4 = new System.Windows.Forms.MenuItem();
+			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabSummary = new System.Windows.Forms.TabPage();
 			this.panelDescription = new System.Windows.Forms.Panel();
@@ -51,10 +55,6 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.toastPanel1 = new PotatoReader.ToastPanel();
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.menuItem3 = new System.Windows.Forms.MenuItem();
-			this.menuItem4 = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabSummary.SuspendLayout();
 			this.panelDescription.SuspendLayout();
@@ -76,6 +76,33 @@
 			// 
 			this.menuItemFile.Index = 0;
 			this.menuItemFile.Text = "File";
+			// 
+			// menuItem1
+			// 
+			this.menuItem1.Index = 1;
+			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem4,
+            this.menuItem2,
+            this.menuItem3});
+			this.menuItem1.Text = "View";
+			// 
+			// menuItem4
+			// 
+			this.menuItem4.Index = 0;
+			this.menuItem4.Text = "Show browser screen";
+			this.menuItem4.Click += new System.EventHandler(this.menuItem4_Click);
+			// 
+			// menuItem2
+			// 
+			this.menuItem2.Index = 1;
+			this.menuItem2.Text = "Show manga screen";
+			this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
+			// 
+			// menuItem3
+			// 
+			this.menuItem3.Index = 2;
+			this.menuItem3.Text = "Show reader screen";
+			this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
 			// 
 			// tabControl1
 			// 
@@ -266,9 +293,9 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(8, 20);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(352, 13);
+			this.label1.Size = new System.Drawing.Size(408, 13);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "Enter manga URL (Kissmanga, Mangahere and Mangareader supported):";
+			this.label1.Text = "Enter manga URL (Kissmanga, Mangahere, Mangareader and Funmanga supported):";
 			// 
 			// textBox1
 			// 
@@ -285,33 +312,6 @@
 			this.toastPanel1.Size = new System.Drawing.Size(839, 40);
 			this.toastPanel1.TabIndex = 8;
 			this.toastPanel1.Visible = false;
-			// 
-			// menuItem1
-			// 
-			this.menuItem1.Index = 1;
-			this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem4,
-            this.menuItem2,
-            this.menuItem3});
-			this.menuItem1.Text = "View";
-			// 
-			// menuItem2
-			// 
-			this.menuItem2.Index = 1;
-			this.menuItem2.Text = "Show manga screen";
-			this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
-			// 
-			// menuItem3
-			// 
-			this.menuItem3.Index = 2;
-			this.menuItem3.Text = "Show reader screen";
-			this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
-			// 
-			// menuItem4
-			// 
-			this.menuItem4.Index = 0;
-			this.menuItem4.Text = "Show browser screen";
-			this.menuItem4.Click += new System.EventHandler(this.menuItem4_Click);
 			// 
 			// Form1
 			// 
