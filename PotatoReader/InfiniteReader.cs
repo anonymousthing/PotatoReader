@@ -117,12 +117,13 @@ namespace PotatoReader
 			}
 			int movement = -e.Delta;
 
+			float maximumScroll = float.MaxValue;
 			//Don't allow scrolling if the last visible page is the last page available
 			if (movement > 0 || zooming)
 			{
 				if (provider.IsLastPage(lastVisiblePage))
 				{
-					float maximumScroll = GetFitDimensions(currentPage).Height;
+					maximumScroll = GetFitDimensions(currentPage).Height;
 					for (int i = buffer + 1; i < loadedPages.Count; i++)
 					{
 						if (loadedPages[i] == null)
@@ -130,17 +131,6 @@ namespace PotatoReader
 						maximumScroll += GetFitDimensions(loadedPages[i]).Height;
 					}
 					maximumScroll -= Height;
-					scrollOffset = Math.Min((int)maximumScroll, scrollOffset + movement);
-
-					//If we zoom out and we're now on the previous page, just update the current page
-					while (scrollOffset < 0)
-					{
-						MoveToPreviousPage();
-						scrollOffset += GetFitDimensions(currentPage).Height;
-					}
-
-					this.Invalidate();
-					return;
 				}
 			}
 			else if (movement < 0)
@@ -155,8 +145,8 @@ namespace PotatoReader
 
 			if (zooming)
 				return;
-			
-			scrollOffset += movement;
+
+			scrollOffset = (int)(Math.Min(maximumScroll, scrollOffset + movement));
 
 			RefetchPages();
 
