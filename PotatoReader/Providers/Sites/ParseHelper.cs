@@ -11,23 +11,30 @@ namespace PotatoReader.Providers.Sites
 	{
 		public static IEnumerable<(string Name, string Value)> ParseGroup(string regExp, string input, string nameGroup, string valueGroup)
 		{
-			var list = new List<(string Name, string Value)>();
-			var reg = new Regex(regExp, RegexOptions.IgnoreCase);
-			var matches = reg.Matches(input);
-
-			if (matches.Count == 0)
+			try
 			{
-				throw new Exception("Could not parse");
-			}
+				var list = new List<(string Name, string Value)>();
+				var reg = new Regex(regExp, RegexOptions.IgnoreCase);
+				var matches = reg.Matches(input);
 
-			foreach (Match match in matches)
-			{
-				var value = match.Groups[valueGroup].Value.Trim();
-				var name = match.Groups[nameGroup].Value.Trim();
-				var chapter = (name, value);
-				list.Add(chapter);
+				if (matches.Count == 0)
+				{
+					throw new Exception("Could not parse");
+				}
+
+				foreach (Match match in matches)
+				{
+					var value = match.Groups[valueGroup].Value.Trim();
+					var name = match.Groups[nameGroup].Value.Trim();
+					var chapter = (name, value);
+					list.Add(chapter);
+				}
+				return list;
 			}
-			return list;
+			catch (Exception e)
+			{
+				throw e;
+			}
 		}
 
 		public static IEnumerable<string> Parse(string regExp, string input, string groupName)

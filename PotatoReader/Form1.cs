@@ -86,8 +86,23 @@ namespace PotatoReader
 
 		private async void LoadBook(string url)
 		{
+			if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+			{
+				label2.Text = "Unsupported source! Check your url.";
+				return;
+			}
+
+			ShowMangaScreen();
+
 			//Load book
 			Book book = await source.LoadBook(url);
+			if (book == null)
+			{
+				label2.Text = "Unsupported source! Check your url.";
+				ShowBrowserScreen();
+				return;
+			}
+
 			lblMangaTitle.Text = book.Title;
 			pictureBoxCoverImage.Image = book.CoverImage;
 			lblMangaDescription.Text = book.Description;
@@ -115,7 +130,6 @@ namespace PotatoReader
 		private void button1_Click(object sender, EventArgs e)
 		{
 			LoadBook(textBox1.Text);
-			ShowMangaScreen();
 		}
 
 		private void menuItem4_Click(object sender, EventArgs e)
@@ -131,6 +145,17 @@ namespace PotatoReader
 		private void menuItem3_Click(object sender, EventArgs e)
 		{
 			ShowReaderScreen();
+		}
+
+		private async void menuItem6_Click(object sender, EventArgs e)
+		{
+			var currentPage = infiniteReader.CurrentPage;
+			var book = currentPage.Chapter.Book;
+			var chapterNumber = currentPage.Chapter.ChapterNumber + 1;
+
+			source.LoadChapter(book, chapterNumber, () => { });
+			await Task.Run(() => source.WaitForChapter(book, chapterNumber));
+			infiniteReader.SetPage(source.LoadChapter(book, chapterNumber, () => { }).Pages[0]);
 		}
 	}
 }

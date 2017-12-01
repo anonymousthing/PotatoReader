@@ -16,7 +16,8 @@ namespace PotatoReader.Providers
 			new MangaReader(),
 			new KissManga(),
 			new MangaHere(),
-			new Funmanga()
+			new Funmanga(),
+			new Mangafox()
 		};
 		public HashSet<Chapter> downloadingChapters = new HashSet<Chapter>();
 
@@ -49,7 +50,8 @@ namespace PotatoReader.Providers
 				});
 
 				return null;
-			} else
+			}
+			else
 			{
 				return chapter;
 			}
@@ -61,9 +63,16 @@ namespace PotatoReader.Providers
 			{
 				if (site.Matches(path))
 				{
-					Book book = await site.GetBook(path);
-					book.Source = site;
-					return book;
+					try
+					{
+						Book book = await site.GetBook(path);
+						book.Source = site;
+						return book;
+					}
+					catch (Exception e)
+					{
+						return null;
+					}
 				}
 			}
 			return null;

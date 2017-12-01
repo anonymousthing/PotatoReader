@@ -78,12 +78,12 @@ namespace PotatoReader.Providers.Sites
 
 		public KissManga()
 		{
-			LoadKeys().Wait();
+			
 		}
 
-		public async Task LoadKeys()
+		public async Task LoadKeys(string inputPage)
 		{
-			string page = await DownloadHelper.DownloadStringAsync("http://kissmanga.com/Manga/Black-Clover/Chapter-001?id=277498");
+			string page = await DownloadHelper.DownloadStringAsync(inputPage);
 			/// Could be secured against changes by capturing the script's path as it exists in the live document instead of assuming the location.
 			string pattern = "<script\\s+(type=[\"']text/javascript[\"'])?\\s+(src=[\"']/Scripts/{0}[\"'])>";
 			string concatedPattern = string.Concat(string.Format(pattern, "ca.js"), "|", string.Format(pattern, "lo.js"));
@@ -125,6 +125,12 @@ namespace PotatoReader.Providers.Sites
 			}
 		}
 
+		private async Task CheckDecryptor(string inputPage)
+		{
+			if (decryptor == null)
+				await LoadKeys(inputPage);
+		}
+
 		public override async Task<Page> DownloadPage(Page page)
 		{
 			page.Image = await DownloadHelper.DownloadImageAsync(page.Url);
@@ -157,6 +163,7 @@ namespace PotatoReader.Providers.Sites
 
 		public override async Task<Chapter> GetPageUrls(Chapter chapter)
 		{
+			await CheckDecryptor(chapter.Url);
 			string page = await DownloadHelper.DownloadStringAsync(chapter.Url);
 			var encryptedPages = ParseHelper.Parse("lstImages.push\\(wrapKA\\(\"(?<Value>.[^\"]*)\"\\)\\)", page, "Value");
 			var pageLinks = encryptedPages.Select(e => decryptor.DecryptFromBase64(e)).ToArray();

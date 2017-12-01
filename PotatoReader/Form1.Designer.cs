@@ -55,6 +55,9 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.toastPanel1 = new PotatoReader.ToastPanel();
+			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.menuItem6 = new System.Windows.Forms.MenuItem();
+			this.menuItem7 = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabSummary.SuspendLayout();
 			this.panelDescription.SuspendLayout();
@@ -70,7 +73,8 @@
 			// 
 			this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItemFile,
-            this.menuItem1});
+            this.menuItem1,
+            this.menuItem5});
 			// 
 			// menuItemFile
 			// 
@@ -271,7 +275,7 @@
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(388, 34);
+			this.button1.Location = new System.Drawing.Point(391, 49);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 3;
@@ -293,13 +297,14 @@
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(8, 20);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(408, 13);
+			this.label1.Size = new System.Drawing.Size(408, 26);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "Enter manga URL (Kissmanga, Mangahere, Mangareader and Funmanga supported):";
+			this.label1.Text = "Enter manga URL (Kissmanga, Mangahere, Mangareader and Funmanga supported):\r\nNote" +
+    ": Kissmanga is super slow first time round (thanks cloudflare + encryption)";
 			// 
 			// textBox1
 			// 
-			this.textBox1.Location = new System.Drawing.Point(8, 36);
+			this.textBox1.Location = new System.Drawing.Point(11, 51);
 			this.textBox1.Name = "textBox1";
 			this.textBox1.Size = new System.Drawing.Size(374, 20);
 			this.textBox1.TabIndex = 0;
@@ -312,6 +317,25 @@
 			this.toastPanel1.Size = new System.Drawing.Size(839, 40);
 			this.toastPanel1.TabIndex = 8;
 			this.toastPanel1.Visible = false;
+			// 
+			// menuItem5
+			// 
+			this.menuItem5.Index = 2;
+			this.menuItem5.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem6,
+            this.menuItem7});
+			this.menuItem5.Text = "Navigation";
+			// 
+			// menuItem6
+			// 
+			this.menuItem6.Index = 0;
+			this.menuItem6.Text = "Next chapter";
+			this.menuItem6.Click += new System.EventHandler(this.menuItem6_Click);
+			// 
+			// menuItem7
+			// 
+			this.menuItem7.Index = 1;
+			this.menuItem7.Text = "Previous chapter";
 			// 
 			// Form1
 			// 
@@ -366,6 +390,9 @@
 		private System.Windows.Forms.MenuItem menuItem4;
 		private System.Windows.Forms.MenuItem menuItem2;
 		private System.Windows.Forms.MenuItem menuItem3;
+		private System.Windows.Forms.MenuItem menuItem5;
+		private System.Windows.Forms.MenuItem menuItem6;
+		private System.Windows.Forms.MenuItem menuItem7;
 	}
 }
 

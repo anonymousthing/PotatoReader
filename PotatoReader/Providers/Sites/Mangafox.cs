@@ -1,14 +1,13 @@
-﻿using System;
+﻿using PotatoReader.Structures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PotatoReader.Structures;
-using System.Drawing;
 
 namespace PotatoReader.Providers.Sites
 {
-	class MangaReader : Site
+	class Mangafox : Site
 	{
 		public override async Task<Page> DownloadPage(Page page)
 		{
@@ -19,19 +18,16 @@ namespace PotatoReader.Providers.Sites
 		public override async Task<Book> GetBook(string bookUrl)
 		{
 			string page = await DownloadHelper.DownloadStringAsync(bookUrl);
-
-			//Get chapters
-			var chaptersLinks = ParseHelper.ParseGroup("<a href=\"(?<Value>[^\"]+)\">(?<Name>[^<]+)</a> :", page, "Name", "Value");
-			var resolvedChapters = chaptersLinks.Reverse().GroupBy(x => x.Value).Select(g => g.First()).Reverse().ToArray();
+			var chaptersLinks = ParseHelper.ParseGroup("<a href=\"(?<Value>.*?)\" .*? class=\"tips\">(?<Name>.*?)</a>", page, "Name", "Value").Reverse().ToArray();
 			Book book = new Book();
 			var chapters = new List<Chapter>();
-			for (int i = 0; i < resolvedChapters.Length; i++)
+			for (int i = 0; i < chaptersLinks.Length; i++)
 			{
-				var c = resolvedChapters[i];
+				var c = chaptersLinks[i];
 				chapters.Add(new Chapter()
 				{
 					DisplayName = c.Name,
-					Url = new Uri(new Uri(bookUrl), c.Value).AbsoluteUri,
+					Url = "https:" + c.Value,
 					Book = book,
 					ChapterNumber = i
 				});
@@ -40,10 +36,18 @@ namespace PotatoReader.Providers.Sites
 			book.Url = bookUrl;
 
 			//Get other book details
-			var imgUrl = ParseHelper.Parse("<div id=\"mangaimg\"><img src=\"(?<Value>.+)\" alt=", page, "Value").First();
+			var imgUrl = ParseHelper.Parse("<div class=\"cover\">\\s+<img .*? src=\"(?<Value>.*?)\"", page, "Value").First();
 			book.CoverImage = await DownloadHelper.DownloadImageAsync(imgUrl);
-			book.Title = ParseHelper.Parse("<h2 class=\"aname\">(?<Value>.+)</h2>", page, "Value").First();
-			book.Description = ParseHelper.Parse("<div id=\"readmangasum\">\\s+<h2>.+</h2>\\s+<p>(?<Value>(?s).*?)</p>\\s+</div>", page, "Value").First();
+			book.Title = ParseHelper.Parse("<div id=\"title\">\\s+<h1 .*?>\\s*(?<Value>.*?)\\s*</h1>", page, "Value").First();
+
+			try
+			{
+				book.Description = ParseHelper.Parse("<p class=\"summary\">(?<Value>(.|\\s)*?)</p>", page, "Value").First();
+				book.Description = book.Description.Replace("&nbsp;", "");
+			} catch (Exception e)
+			{
+
+			}
 
 			return book;
 		}
@@ -51,8 +55,8 @@ namespace PotatoReader.Providers.Sites
 		public override async Task<Chapter> GetPageUrls(Chapter chapter)
 		{
 			string page = await DownloadHelper.DownloadStringAsync(chapter.Url);
-			var pageLinks = ParseHelper.Parse(@"<option value=""(?<Value>[^""]+)""(| selected=""selected"")>\d+</option>", page, "Value");
-			var resolvedPages = pageLinks.Select(p => new Uri(new Uri(chapter.Url), p).AbsoluteUri).ToArray();
+			var pageLinks = ParseHelper.Parse("<option value=\"(?<Value>.*?)\".*?>\\d+</option>", page, "Value");
+			var resolvedPages = pageLinks.Select(p => new Uri(new Uri(chapter.Url), p + ".html").AbsoluteUri).ToArray();
 
 			var pages = new Page[resolvedPages.Length];
 
@@ -63,7 +67,7 @@ namespace PotatoReader.Providers.Sites
 				{
 					Chapter = chapter,
 					PageNumber = i,
-					Url = ParseHelper.Parse(@"<img id=""img"" width=""\d+"" height=""\d+"" src=""(?<Value>[^""]+)""", imagePage, "Value").First()
+					Url = ParseHelper.Parse("<img src=\"(?<Value>.*?)\" .*? id=\"image\"", imagePage, "Value").First()
 				};
 			})));
 
@@ -73,10 +77,10 @@ namespace PotatoReader.Providers.Sites
 
 		public override bool Matches(string path)
 		{
-			return new Uri(path).Host.ToLower() == "www.mangareader.net";
+			return new Uri(path).Host.ToLower() == "mangafox.me";
 		}
 
-		public override Task<IEnumerable<Book>> Search(string bookName)
+		public override async Task<IEnumerable<Book>> Search(string bookName)
 		{
 			throw new NotImplementedException();
 		}

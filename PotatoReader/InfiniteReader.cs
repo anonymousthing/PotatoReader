@@ -13,13 +13,13 @@ namespace PotatoReader
 {
 	class InfiniteReader : Control
 	{
-		bool renderDebug = true;
+		bool renderDebug = false;
 		//N pages above, N pages below of buffer space. This refers to loaded pages, not rendered pages.
 		int buffer = 7;
 		PageProvider provider;
 		//Indices [0 -> buffer] are previous pages, index [buffer] is the current page, indices [buffer + 1 -> 2 * buffer] are next pages
 		Deque<Page> loadedPages = new Deque<Page>();
-		Page currentPage
+		public Page CurrentPage
 		{
 			get { return loadedPages[buffer]; }
 		}		
@@ -123,7 +123,7 @@ namespace PotatoReader
 			{
 				if (provider.IsLastPage(lastVisiblePage))
 				{
-					maximumScroll = GetFitDimensions(currentPage).Height;
+					maximumScroll = GetFitDimensions(CurrentPage).Height;
 					for (int i = buffer + 1; i < loadedPages.Count; i++)
 					{
 						if (loadedPages[i] == null)
@@ -135,7 +135,7 @@ namespace PotatoReader
 			}
 			else if (movement < 0)
 			{
-				if (provider.IsFirstPage(currentPage))
+				if (provider.IsFirstPage(CurrentPage))
 				{
 					scrollOffset = Math.Max(0, scrollOffset + movement);
 					this.Invalidate();
@@ -150,7 +150,7 @@ namespace PotatoReader
 
 			RefetchPages();
 
-			int scaledPageHeight = GetFitDimensions(currentPage).Height;
+			int scaledPageHeight = GetFitDimensions(CurrentPage).Height;
 
 			if (scrollOffset > scaledPageHeight)
 			{
@@ -158,7 +158,7 @@ namespace PotatoReader
 				{
 					MoveToNextPage();
 					scrollOffset = scrollOffset - scaledPageHeight;
-					scaledPageHeight = GetFitDimensions(currentPage).Height;
+					scaledPageHeight = GetFitDimensions(CurrentPage).Height;
 				}
 			}
 			else if (scrollOffset < 0)
@@ -166,7 +166,7 @@ namespace PotatoReader
 				while (scrollOffset < 0)
 				{
 					MoveToPreviousPage();
-					scrollOffset += GetFitDimensions(currentPage).Height;
+					scrollOffset += GetFitDimensions(CurrentPage).Height;
 				}
 			}
 
@@ -280,12 +280,12 @@ namespace PotatoReader
 				return;
 			
 			//First draw the current page at (0, -scrollOffset)
-			var size = GetFitDimensions(currentPage);
+			var size = GetFitDimensions(CurrentPage);
 			float currentHeight = size.Height;
-			if (currentPage == null || !currentPage.Loaded)
+			if (CurrentPage == null || !CurrentPage.Loaded)
 				e.Graphics.FillRectangle(Brushes.LightBlue, (Width - size.Width) / 2, -scrollOffset, size.Width, size.Height);
 			else
-				e.Graphics.DrawImage(currentPage.Image, (Width - size.Width) / 2, -scrollOffset, size.Width, size.Height);
+				e.Graphics.DrawImage(CurrentPage.Image, (Width - size.Width) / 2, -scrollOffset, size.Width, size.Height);
 
 			//Iteratively draw next pages until we can't see those pages anymore
 			//(only draw pages that are visible)
@@ -311,7 +311,7 @@ namespace PotatoReader
 			lastVisiblePage = loadedPages[i - 1];
 
 			//Render page numbers
-			string pageNumberText = currentPage.Chapter.DisplayName + " - " + (currentPage.PageNumber + 1) + "/" + currentPage.Chapter.Pages.Length;
+			string pageNumberText = CurrentPage.Chapter.DisplayName + " - " + (CurrentPage.PageNumber + 1) + "/" + CurrentPage.Chapter.Pages.Length;
 			var pageNumberSize = e.Graphics.MeasureString(pageNumberText, pageNumberFont);
 			var pageNumberPosition = new PointF(Width - pageNumberSize.Width, Height - pageNumberSize.Height);
 			e.Graphics.FillRectangle(pageNumberBG, new RectangleF(pageNumberPosition, pageNumberSize));

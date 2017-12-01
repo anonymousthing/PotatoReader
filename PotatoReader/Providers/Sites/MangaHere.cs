@@ -18,7 +18,7 @@ namespace PotatoReader.Providers.Sites
 		public override async Task<Book> GetBook(string bookUrl)
 		{
 			string page = await DownloadHelper.DownloadStringAsync(bookUrl);
-			var chaptersLinks = ParseHelper.ParseGroup("<a class=\"color_0077\" href=\"(?<Value>http://[^\"]+)\"[^<]+>(?<Name>[^<]+)</a>", page, "Name", "Value").Reverse().ToArray();
+			var chaptersLinks = ParseHelper.ParseGroup("<a class=\"color_0077\" href=\"(?<Value>.*?)\".*>(?<Name>\\s*.*\\s*)</a>", page, "Name", "Value").Reverse().ToArray();
 			Book book = new Book();
 			var chapters = new List<Chapter>();
 			for (int i = 0; i < chaptersLinks.Length; i++)
@@ -27,7 +27,7 @@ namespace PotatoReader.Providers.Sites
 				chapters.Add(new Chapter()
 				{
 					DisplayName = c.Name,
-					Url = c.Value,
+					Url = "https:" + c.Value,
 					Book = book,
 					ChapterNumber = i
 				});
@@ -48,7 +48,7 @@ namespace PotatoReader.Providers.Sites
 		public override async Task<Chapter> GetPageUrls(Chapter chapter)
 		{
 			string page = await DownloadHelper.DownloadStringAsync(chapter.Url);
-			var pageLinks = ParseHelper.Parse(@"<option value=""(?<Value>[^""]+)"" (|selected=""selected"")>\d+</option>", page, "Value");
+			var pageLinks = ParseHelper.Parse("<option value=\"(?<Value>.*?)\".*>\\d+</option>", page, "Value");
 			var resolvedPages = pageLinks.Select(p => new Uri(new Uri(chapter.Url), p).AbsoluteUri).ToArray();
 
 			var pages = new Page[resolvedPages.Length];
@@ -60,7 +60,7 @@ namespace PotatoReader.Providers.Sites
 				{
 					Chapter = chapter,
 					PageNumber = i,
-					Url = ParseHelper.Parse("<img src=\"(?<Value>[^\"]+)\" onload=", imagePage, "Value").First()
+					Url = ParseHelper.Parse("<img src=\"(?<Value>.*?)\" onload=", imagePage, "Value").First()
 			};
 			})));
 

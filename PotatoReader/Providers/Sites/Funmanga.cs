@@ -39,7 +39,8 @@ namespace PotatoReader.Providers.Sites
 			var imgUrl = ParseHelper.Parse("<div class=\"col-md-4\">\\s*<img src=\"(?<Value>.+)\" alt=", page, "Value").First();
 			book.CoverImage = await DownloadHelper.DownloadImageAsync(imgUrl);
 			book.Title = ParseHelper.Parse("<h5 class=\"widget-heading\">(?<Value>.+)</h5>", page, "Value").First();
-			book.Description = ParseHelper.Parse("<div class=\"note note-default margin-top-15\">\\s*<p>(?<Value>[^\"]+)</p>\\s*</div>", page, "Value").First();
+			book.Description = ParseHelper.Parse("<div class=\"note note-default margin-top-15\">(?<Value>(.|\\s)*?)</div>", page, "Value").First().Trim();
+			book.Description = book.Description.Replace("<br/>", "\n");
 
 			return book;
 		}
@@ -66,7 +67,7 @@ namespace PotatoReader.Providers.Sites
 
 		public override bool Matches(string path)
 		{
-			return new Uri(path).Host.ToLower() == "funmanga.com";
+			return new Uri(path).Host.ToLower() == "funmanga.com" || new Uri(path).Host.ToLower() == "www.funmanga.com";
 		}
 
 		public override async Task<IEnumerable<Book>> Search(string bookName)

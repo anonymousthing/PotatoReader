@@ -13,6 +13,7 @@ namespace PotatoReader.Providers.Sites
 	static class DownloadHelper
 	{
 		static HttpClient client = CreateHttpClient();
+		const int retryCap = 3;
 
 		public static async Task<Image> DownloadImageAsync(string url)
 		{
@@ -21,11 +22,23 @@ namespace PotatoReader.Providers.Sites
 				return Image.FromStream(await response.Content.ReadAsStreamAsync());
 			}
 		}
-
+		
 		public static async Task<string> DownloadStringAsync(string url)
+		{
+			return await DownloadStringAsync(url, 0);
+		}
+
+		private static async Task<string> DownloadStringAsync(string url, int retryCount)
 		{
 			using (var response = await client.GetAsync(url))
 			{
+				if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
+				{
+					if (retryCount == retryCap)
+						return null;
+					await Task.Delay(500);
+					return await DownloadStringAsync(url, retryCount + 1);
+				}
 				return await response.Content.ReadAsStringAsync();
 			}
 		}
@@ -41,7 +54,9 @@ namespace PotatoReader.Providers.Sites
 			};
 
 			var handler = new ClearanceHandler(firstHandle);
-			return new HttpClient(handler);
+			HttpClient client = new HttpClient(handler);
+			client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36");
+			return client;
 		}
 	}
 }
