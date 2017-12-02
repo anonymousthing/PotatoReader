@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -84,7 +85,7 @@ namespace PotatoReader
 			tablessTabControl1.SelectedTab = screenReader;
 		}
 
-		private async void LoadBook(string url)
+		private async Task LoadBook(string url)
 		{
 			if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
 			{
@@ -127,9 +128,9 @@ namespace PotatoReader
 			infiniteReader.SetPage(source.LoadChapter(chapter.Book, chapter.ChapterNumber, () => { }).Pages[0]);
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private async void button1_Click(object sender, EventArgs e)
 		{
-			LoadBook(textBox1.Text);
+			await LoadBook(textBox1.Text);
 		}
 
 		private void menuItem4_Click(object sender, EventArgs e)
@@ -156,6 +157,18 @@ namespace PotatoReader
 			source.LoadChapter(book, chapterNumber, () => { });
 			await Task.Run(() => source.WaitForChapter(book, chapterNumber));
 			infiniteReader.SetPage(source.LoadChapter(book, chapterNumber, () => { }).Pages[0]);
+		}
+
+		private async void Form1_DragDrop(object sender, DragEventArgs e)
+		{
+			string data = (string)e.Data.GetData(DataFormats.UnicodeText);
+			await LoadBook(data);
+		}
+
+		private void Form1_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.UnicodeText))
+				e.Effect = DragDropEffects.Copy;
 		}
 	}
 }

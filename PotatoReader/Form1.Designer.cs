@@ -35,6 +35,9 @@
 			this.menuItem4 = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.menuItem3 = new System.Windows.Forms.MenuItem();
+			this.menuItem5 = new System.Windows.Forms.MenuItem();
+			this.menuItem6 = new System.Windows.Forms.MenuItem();
+			this.menuItem7 = new System.Windows.Forms.MenuItem();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabSummary = new System.Windows.Forms.TabPage();
 			this.panelDescription = new System.Windows.Forms.Panel();
@@ -55,9 +58,6 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.toastPanel1 = new PotatoReader.ToastPanel();
-			this.menuItem5 = new System.Windows.Forms.MenuItem();
-			this.menuItem6 = new System.Windows.Forms.MenuItem();
-			this.menuItem7 = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabSummary.SuspendLayout();
 			this.panelDescription.SuspendLayout();
@@ -107,6 +107,25 @@
 			this.menuItem3.Index = 2;
 			this.menuItem3.Text = "Show reader screen";
 			this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
+			// 
+			// menuItem5
+			// 
+			this.menuItem5.Index = 2;
+			this.menuItem5.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem6,
+            this.menuItem7});
+			this.menuItem5.Text = "Navigation";
+			// 
+			// menuItem6
+			// 
+			this.menuItem6.Index = 0;
+			this.menuItem6.Text = "Next chapter";
+			this.menuItem6.Click += new System.EventHandler(this.menuItem6_Click);
+			// 
+			// menuItem7
+			// 
+			this.menuItem7.Index = 1;
+			this.menuItem7.Text = "Previous chapter";
 			// 
 			// tabControl1
 			// 
@@ -318,27 +337,9 @@
 			this.toastPanel1.TabIndex = 8;
 			this.toastPanel1.Visible = false;
 			// 
-			// menuItem5
-			// 
-			this.menuItem5.Index = 2;
-			this.menuItem5.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem6,
-            this.menuItem7});
-			this.menuItem5.Text = "Navigation";
-			// 
-			// menuItem6
-			// 
-			this.menuItem6.Index = 0;
-			this.menuItem6.Text = "Next chapter";
-			this.menuItem6.Click += new System.EventHandler(this.menuItem6_Click);
-			// 
-			// menuItem7
-			// 
-			this.menuItem7.Index = 1;
-			this.menuItem7.Text = "Previous chapter";
-			// 
 			// Form1
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(839, 742);
@@ -348,6 +349,8 @@
 			this.Menu = this.mainMenu1;
 			this.Name = "Form1";
 			this.Text = " ";
+			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form1_DragDrop);
+			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form1_DragEnter);
 			this.tabControl1.ResumeLayout(false);
 			this.tabSummary.ResumeLayout(false);
 			this.tabSummary.PerformLayout();
