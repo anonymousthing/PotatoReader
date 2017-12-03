@@ -40,6 +40,7 @@ namespace PotatoReader.Providers.Sites
 			book.CoverImage = await DownloadHelper.DownloadImageAsync(imgUrl);
 			book.Title = ParseHelper.Parse("<h5 class=\"widget-heading\">(?<Value>.+)</h5>", page, "Value").First();
 			book.Description = ParseHelper.Parse("<div class=\"note note-default margin-top-15\">(?<Value>(.|\\s)*?)</div>", page, "Value").First().Trim();
+			book.Description = System.Web.HttpUtility.HtmlDecode(book.Description);
 			book.Description = book.Description.Replace("<br/>", "\n");
 
 			return book;

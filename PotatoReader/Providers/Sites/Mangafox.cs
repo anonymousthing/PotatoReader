@@ -43,7 +43,10 @@ namespace PotatoReader.Providers.Sites
 			try
 			{
 				book.Description = ParseHelper.Parse("<p class=\"summary\">(?<Value>(.|\\s)*?)</p>", page, "Value").First();
-				book.Description = book.Description.Replace("&nbsp;", "");
+				book.Description = System.Web.HttpUtility.HtmlDecode(book.Description);
+				book.Description = book.Description.Replace("<br />", "\n");
+
+				book.Genres = ParseHelper.Parse("<a href=\"//mangafox.me/search/genres/.*?/\">(?<Name>.*?)</a>", page, "Name").ToArray();
 			} catch (Exception e)
 			{
 

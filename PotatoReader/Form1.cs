@@ -107,6 +107,7 @@ namespace PotatoReader
 			lblMangaTitle.Text = book.Title;
 			pictureBoxCoverImage.Image = book.CoverImage;
 			lblMangaDescription.Text = book.Description;
+			lblMangaGenres.Text = "Genre(s): " + string.Join(", ", book.Genres);
 
 			//Set chapters
 			listChapters.Items.Clear();

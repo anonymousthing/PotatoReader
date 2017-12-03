@@ -39,5 +39,10 @@ namespace PotatoReader.Structures
 		/// The source URL of this book.
 		/// </summary>
 		public string Url;
+
+		/// <summary>
+		/// The genres for this book.
+		/// </summary>
+		public string[] Genres;
 	}
 }

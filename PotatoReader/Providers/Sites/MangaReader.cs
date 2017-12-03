@@ -44,6 +44,7 @@ namespace PotatoReader.Providers.Sites
 			book.CoverImage = await DownloadHelper.DownloadImageAsync(imgUrl);
 			book.Title = ParseHelper.Parse("<h2 class=\"aname\">(?<Value>.+)</h2>", page, "Value").First();
 			book.Description = ParseHelper.Parse("<div id=\"readmangasum\">\\s+<h2>.+</h2>\\s+<p>(?<Value>(?s).*?)</p>\\s+</div>", page, "Value").First();
+			book.Description = System.Web.HttpUtility.HtmlDecode(book.Description);
 
 			return book;
 		}
